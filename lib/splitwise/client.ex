@@ -5,12 +5,12 @@ defmodule ExSplitwise.Client do
 
   import ExSplitwise.OAuth2.Client, only: [access_token: 0]
 
-  @base_url "https://www.splitwise.com"
+  @base_url "https://secure.splitwise.com"
 
   alias ExSplitwise.Client.Response
 
   def get!(url) do
-    result = http().get!("#{@base_url}#{url}", ["Authorization": "Bearer #{access_token()}"])
+    result = http().get!("#{@base_url}#{url}", Authorization: "Bearer #{access_token()}")
 
     %Response{
       body: decode!(result.body),
@@ -24,10 +24,12 @@ defmodule ExSplitwise.Client do
   end
 
   def post!(url, body) do
-    result = http().post!(
-      "#{@base_url}#{url}",
-      {:form, body},
-      ["Authorization": "Bearer #{access_token()}"])
+    result =
+      http().post!(
+        "#{@base_url}#{url}",
+        {:form, body},
+        Authorization: "Bearer #{access_token()}"
+      )
 
     %Response{
       body: decode!(result.body),
